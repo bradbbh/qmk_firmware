@@ -3,15 +3,6 @@ Ortho60 Keymap
 */
 
 /*
-Instructions for updating qmk
-	-cd qmk_firmware
-	-git fetch --all
-	-git reset --hard master
-You may want to run:
-	-make git-submodule
-*/
-
-/*
 Instructions for flashing new keymap:
 	-Install qmk_firmware (https://docs.qmk.fm/#/newbs).
 	-Create and build firmware.
@@ -27,21 +18,22 @@ After pressing reset again, board should be ready with new firmware!
 
 #include QMK_KEYBOARD_H
 
-// Layers
-#define DEFAULT 0
-#define LOWER 1
-#define RAISE 2
-#define FUNCT 3
-#define MOUSE 4
-#define TEMPLATE 31
+// Keycodes
+enum ortho60_keycodes {
+  _DUMMY = SAFE_RANGE,
 
-/*
-enum custom_keycodes {
-  QWERTY = SAFE_RANGE,
-  LOWER,
-  RAISE
+  WIDETXT, // w i d e t e x t   f o r   a   w i d e   b o y
+  TAUNTXT,  // FoR ThE UlTiMaTe sHiTpOsTiNg eXpErIeNcE
 };
-*/
+
+// Layers
+enum ortho60_layers {
+  DEFAULT,
+  LOWER,
+  RAISE,
+  FUNCT,
+  MOUSE,
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -107,22 +99,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 /* Function
  * ,-----------------------------------------------------------------------------------------------------------.
- * |        |        |        |        |        |        |        |        |        |        |  Home  |Page Up |
+ * | WIDETXT|        |        |        |        |        |        |        |        |        |  Home  |Page Up |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
- * |        |        |        |        |        |        |        |        |        |        |  End   |Page Dn |
+ * | TAUNTXT|        |        |        |        |        |        |        |        |        |  End   |Page Dn |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
- * |        |        |        |        |        |        |        |        |        |        |  Mute  |  MPLY  |
+ * | CapsLck|        |        |        |        |        |        |        |        |        |  Mute  |  MPLY  |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
- * |        |        |        |        |        |        |        |        |        |        | Vol Up |        |
+ * | NumLck |        |        |        |        |        |        |        |        |        | Vol Up |        |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
  * |        |        |        |        |        |                 |        |--------|  MPRV  | Vol Dn |  MNXT  |
  * `-----------------------------------------------------------------------------------------------------------'
  */
 [FUNCT] = LAYOUT_ortho_5x12(
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_HOME, KC_PGUP,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_END,  KC_PGDN,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MUTE, KC_MPLY,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_VOLU, _______,
+    WIDETXT, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_HOME, KC_PGUP,
+    TAUNTXT, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_END,  KC_PGDN,
+    KC_CAPS, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MUTE, KC_MPLY,
+    KC_NUM,  _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_VOLU, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MPRV, KC_VOLD, KC_MNXT 
 ),
 /* Mouse
@@ -144,7 +136,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_ACL0, KC_WH_D, KC_BTN1,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_WH_L, KC_MS_U, KC_WH_R,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MS_L, KC_MS_D, KC_MS_R
-),
+)
+};
 /* Template
  * ,-----------------------------------------------------------------------------------------------------------.
  * |        |        |        |        |        |        |        |        |        |        |        |        |
@@ -158,11 +151,75 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |        |        |        |        |        |                 |        |        |        |        |        |
  * `-----------------------------------------------------------------------------------------------------------'
  */
-[TEMPLATE] = LAYOUT_ortho_5x12(
+/*[TEMPLATE] = LAYOUT_ortho_5x12(
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 )
-};
+*/
+
+// Macros for key presses
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    static struct {
+        bool on;
+        bool first;
+    } w_i_d_e_t_e_x_t = {false, false};
+
+    if (w_i_d_e_t_e_x_t.on) {
+        if (record->event.pressed) {
+            switch (keycode) {
+                case KC_A...KC_0:
+                case KC_MINUS...KC_SLASH:
+                case KC_SPC:
+                    if (w_i_d_e_t_e_x_t.first) {
+                        w_i_d_e_t_e_x_t.first = false;
+                    } else {
+                        send_char(' ');
+                    }
+                    break;
+                case KC_ENT:
+                    w_i_d_e_t_e_x_t.first = true;
+                    break;
+                case KC_BSPC:
+                    send_char('\b'); // backspace
+                    break;
+            }
+        }
+    }
+
+    static bool tAuNtTeXt = false;
+
+    if (tAuNtTeXt) {
+        if (record->event.pressed) {
+            if (keycode != KC_SPC) {
+                register_code(KC_CAPS);
+                unregister_code(KC_CAPS);
+            }
+        }
+    }
+
+    switch (keycode) {
+        /* z e s t y   m e m e s */
+        case WIDETXT:
+            if (record->event.pressed) {
+                w_i_d_e_t_e_x_t.on = !w_i_d_e_t_e_x_t.on;
+                w_i_d_e_t_e_x_t.first = true;
+            }
+            return false;
+        case TAUNTXT:
+            if (record->event.pressed) {
+                tAuNtTeXt = !tAuNtTeXt;
+                // when it's turned on, toggle caps lock (makes first letter lowercase)
+                if (tAuNtTeXt) {
+                    register_code(KC_CAPS);
+                    unregister_code(KC_CAPS);
+                }
+            }
+            return false;
+
+        default:
+            return true; // Process all other keycodes normally
+    }
+}

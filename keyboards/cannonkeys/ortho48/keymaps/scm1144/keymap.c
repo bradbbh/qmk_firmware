@@ -3,15 +3,6 @@ Ortho48 Keymap
 */
 
 /*
-Instructions for updating qmk
-	-cd qmk_firmware
-	-git fetch --all
-	-git reset --hard master
-You may want to run:
-	-make git-submodule
-*/
-
-/*
 Instructions for flashing new keymap:
 	-Install qmk_firmware (https://docs.qmk.fm/#/newbs).
 	-Create and build firmware.
@@ -27,21 +18,22 @@ After pressing reset again, board should be ready with new firmware!
 
 #include QMK_KEYBOARD_H
 
-// Layers
-#define DEFAULT 0
-#define LOWER 1
-#define RAISE 2
-#define FUNCT 3
-#define MOUSE 4
-#define TEMPLATE 31
+// Keycodes
+enum ortho48_keycodes {
+  _DUMMY = SAFE_RANGE,
 
-/*
-enum custom_keycodes {
-  QWERTY = SAFE_RANGE,
-  LOWER,
-  RAISE
+  WIDETXT, // w i d e t e x t   f o r   a   w i d e   b o y
+  TAUNTXT,  // FoR ThE UlTiMaTe sHiTpOsTiNg eXpErIeNcE
 };
-*/
+
+// Layers
+enum ortho48_layers {
+  DEFAULT,
+  LOWER,
+  RAISE,
+  FUNCT,
+  MOUSE,
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -64,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 /* Lower
  * ,-----------------------------------------------------------------------------------------------------------.
- * |    `   |    1   |    2   |    3   |    4   |    5   |    6   |    7   |    8   |    9   |   0    | numlck |
+ * |    `   |    1   |    2   |    3   |    4   |    5   |    6   |    7   |    8   |    9   |   0    |        |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
  * |  Del   |        |        |        |        |        |        |    4   |    5   |    6   |   +    |        |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
@@ -74,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------------------------------'
  */
 [LOWER] = LAYOUT_ortho_4x12(
-    KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_LNUM,
+    KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
     KC_DEL,  _______, _______, _______, _______, _______, _______, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, _______,
     _______, _______, _______, _______, _______, _______, _______, KC_P1,   KC_P2,   KC_P3,   KC_PMNS, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, KC_P0,   KC_PDOT, KC_PENT, _______
@@ -98,19 +90,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 /* Function
  * ,-----------------------------------------------------------------------------------------------------------.
- * |        |        |        |        |        |        |        |        |        |        |  Home  |Page Up |
+ * | WIDETXT| TAUNTXT|        |        |        |        |        |        |        |        |  Home  |Page Up |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
- * |        |        |        |        |        |        |        |        |        |        |  End   |Page Dn |
+ * | CapsLck|        |        |        |        |        |        |        |        |        |  End   |Page Dn |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
- * |        |        |        |        |        |        |        |        |        |        | Vol Up |  MPLY  |
+ * | NumLck |        |        |        |        |        |        |        |        |        | Vol Up |  MPLY  |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
- * |        |--------|        |        |        |                 |        |        |  MPRV  | Vol Dn |  MNXT  |
+ * |        |        |        |        |        |                 |        |--------|  MPRV  | Vol Dn |  MNXT  |
  * `-----------------------------------------------------------------------------------------------------------'
  */
 [FUNCT] = LAYOUT_ortho_4x12(
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_HOME, KC_PGUP,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_END,  KC_PGDN,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_VOLU, KC_MPLY,
+    WIDETXT, TAUNTXT, _______, _______, _______, _______, _______, _______, _______, _______, KC_HOME, KC_PGUP,
+    KC_CAPS, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_END,  KC_PGDN,
+    KC_NUM,  _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_VOLU, KC_MPLY,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MPRV, KC_VOLD, KC_MNXT
 ),
 /* Mouse
@@ -121,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
  * |        |        |        |        |        |        |        |        |        | Scr L  |  M Up  |  Scr R |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
- * |        |        |        |        |        |                 |        |--------|  M Lf  |  M Dn  |  M Ri  |
+ * |        |--------|        |        |        |                 |        |        |  M Lf  |  M Dn  |  M Ri  |
  * `-----------------------------------------------------------------------------------------------------------'
  */
 [MOUSE] = LAYOUT_ortho_4x12(
@@ -129,7 +121,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_ACL0, KC_WH_D, KC_BTN1,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_WH_L, KC_MS_U, KC_WH_R,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MS_L, KC_MS_D, KC_MS_R
-),
+)
+};
 /* Template
  * ,-----------------------------------------------------------------------------------------------------------.
  * |        |        |        |        |        |        |        |        |        |        |        |        |
@@ -141,10 +134,74 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |        |        |        |        |        |                 |        |        |        |        |        |
  * `-----------------------------------------------------------------------------------------------------------'
  */
-[TEMPLATE] = LAYOUT_ortho_4x12(
+/*[TEMPLATE] = LAYOUT_ortho_4x12(
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 )
-};
+*/
+
+// Macros for key presses
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    static struct {
+        bool on;
+        bool first;
+    } w_i_d_e_t_e_x_t = {false, false};
+
+    if (w_i_d_e_t_e_x_t.on) {
+        if (record->event.pressed) {
+            switch (keycode) {
+                case KC_A...KC_0:
+                case KC_MINUS...KC_SLASH:
+                case KC_SPC:
+                    if (w_i_d_e_t_e_x_t.first) {
+                        w_i_d_e_t_e_x_t.first = false;
+                    } else {
+                        send_char(' ');
+                    }
+                    break;
+                case KC_ENT:
+                    w_i_d_e_t_e_x_t.first = true;
+                    break;
+                case KC_BSPC:
+                    send_char('\b'); // backspace
+                    break;
+            }
+        }
+    }
+
+    static bool tAuNtTeXt = false;
+
+    if (tAuNtTeXt) {
+        if (record->event.pressed) {
+            if (keycode != KC_SPC) {
+                register_code(KC_CAPS);
+                unregister_code(KC_CAPS);
+            }
+        }
+    }
+
+    switch (keycode) {
+        /* z e s t y   m e m e s */
+        case WIDETXT:
+            if (record->event.pressed) {
+                w_i_d_e_t_e_x_t.on = !w_i_d_e_t_e_x_t.on;
+                w_i_d_e_t_e_x_t.first = true;
+            }
+            return false;
+        case TAUNTXT:
+            if (record->event.pressed) {
+                tAuNtTeXt = !tAuNtTeXt;
+                // when it's turned on, toggle caps lock (makes first letter lowercase)
+                if (tAuNtTeXt) {
+                    register_code(KC_CAPS);
+                    unregister_code(KC_CAPS);
+                }
+            }
+            return false;
+
+        default:
+            return true; // Process all other keycodes normally
+    }
+}
