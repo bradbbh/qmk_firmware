@@ -184,6 +184,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 )
 */
 
+//Set lights when plugged in
+void keyboard_post_init_user(void) {
+  //Call the post init code
+  //rgblight_sethsv(0,0,0);
+  rgblight_sethsv(21,255,0);
+  rgblight_enable();
+  rgblight_disable();
+}
+
 // Macros for key presses
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static struct {
