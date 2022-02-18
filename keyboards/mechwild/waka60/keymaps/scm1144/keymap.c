@@ -20,10 +20,10 @@
 enum waka60_keycodes {
   _DUMMY = SAFE_RANGE,
 
-  WIDETXT, // w i d e t e x t   f o r   a   w i d e   b o y
-	TAUNTXT,	// FoR ThE UlTiMaTe sHiTpOsTiNg eXpErIeNcE
 	OOSSUU,	// OSU Orange
 };
+
+// Variables
 
 // Layers
 enum waka60_layers {
@@ -98,9 +98,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 /* Function
  * ,------------------------------------------------------        ------------------------------------------------------.
- * | WIDETXT|        |        |        |        |        |        |        |        |        |        |  Home  |Page Up |
+ * |        |        |        |        |        |        |        |        |        |        |        |  Home  |Page Up |
  * |--------+--------+--------+--------+--------+--------+        +--------+--------+--------+--------+--------+--------|
- * | TAUNTXT|        |        |        |        |        |        |        |        |        |        |  End   |Page Dn |
+ * |        |        |        |        |        |        |        |        |        |        |        |  End   |Page Dn |
  * |--------+--------+--------+--------+--------+--------+        +--------+--------+--------+--------+--------+--------|
  * | CapsLck|        |        |        |        |        |        |        |        |        |        |  Mute  |  MPLY  |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
@@ -110,8 +110,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `--------------------------------------------------------------------------------------------------------------------'
  */
 [FUNCT] = LAYOUT(
-    WIDETXT, _______, _______, _______, _______, _______,          _______, _______, _______, _______, KC_HOME, KC_PGUP,
-    TAUNTXT, _______, _______, _______, _______, _______,          _______, _______, _______, _______, KC_END,  KC_PGDN,
+    _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, KC_HOME, KC_PGUP,
+    _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, KC_END,  KC_PGDN,
     KC_CAPS, _______, _______, _______, _______, _______,          _______, _______, _______, _______, KC_MUTE, KC_MPLY,
     KC_NUM,  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_VOLU, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MPRV, KC_VOLD, KC_MNXT 
@@ -184,80 +184,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 )
 */
 
-//Set lights when plugged in
+//Set LEDs when plugged in
 void keyboard_post_init_user(void) {
-  //Call the post init code
-  //rgblight_sethsv(0,0,0);
-  rgblight_sethsv(21,255,0);
+  //Set lights to orange shade but no value
+  //rgblight_sethsv(21,255,0);
+  // Due to a "it is a quirk of the ws2812b + blackpill" need to turn on/off the LEDs
+  // to not have the first LED bright green
   rgblight_enable();
   rgblight_disable();
 }
 
 // Macros for key presses
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    static struct {
-        bool on;
-        bool first;
-    } w_i_d_e_t_e_x_t = {false, false};
 
-    if (w_i_d_e_t_e_x_t.on) {
-        if (record->event.pressed) {
-            switch (keycode) {
-                case KC_A...KC_0:
-                case KC_MINUS...KC_SLASH:
-                case KC_SPC:
-                    if (w_i_d_e_t_e_x_t.first) {
-                        w_i_d_e_t_e_x_t.first = false;
-                    } else {
-                        send_char(' ');
-                    }
-                    break;
-                case KC_ENT:
-                    w_i_d_e_t_e_x_t.first = true;
-                    break;
-                case KC_BSPC:
-                    send_char('\b'); // backspace
-                    break;
-            }
-        }
-    }
+  switch (keycode) {
+    
+    // Set LEDs to OSU orange
+    case OOSSUU:
+      if (record->event.pressed) {
+        rgblight_sethsv(24,255,250);
+      }
+      return false;
 
-    static bool tAuNtTeXt = false;
-
-    if (tAuNtTeXt) {
-        if (record->event.pressed) {
-            if (keycode != KC_SPC) {
-                register_code(KC_CAPS);
-                unregister_code(KC_CAPS);
-            }
-        }
-    }
-
-    switch (keycode) {
-        /* z e s t y   m e m e s */
-        case WIDETXT:
-            if (record->event.pressed) {
-                w_i_d_e_t_e_x_t.on = !w_i_d_e_t_e_x_t.on;
-                w_i_d_e_t_e_x_t.first = true;
-            }
-            return false;
-        case TAUNTXT:
-            if (record->event.pressed) {
-                tAuNtTeXt = !tAuNtTeXt;
-                // when it's turned on, toggle caps lock (makes first letter lowercase)
-                if (tAuNtTeXt) {
-                    register_code(KC_CAPS);
-                    unregister_code(KC_CAPS);
-                }
-            }
-            return false;
-		case OOSSUU:
-			if (record->event.pressed) {
-				rgblight_sethsv(24,255,250);
-			}
-			return false;
-
-        default:
-            return true; // Process all other keycodes normally
-    }
+    default:
+      return true; // Process all other keycodes normally
+  }
 }
