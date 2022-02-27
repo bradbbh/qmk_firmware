@@ -25,6 +25,15 @@ enum waka60_keycodes {
 
 // Variables
 
+//Lighting Layers
+const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+  {2,1,240,0,50} // Light LED 3 white when the caps lock is active
+);
+
+const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+  my_capslock_layer // Later layers take precedence
+);
+
 // Layers
 enum waka60_layers {
 	DEFAULT,
@@ -186,12 +195,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 //Set LEDs when plugged in
 void keyboard_post_init_user(void) {
-  //Set lights to orange shade but no value
-  //rgblight_sethsv(21,255,0);
   // Due to a "it is a quirk of the ws2812b + blackpill" need to turn on/off the LEDs
   // to not have the first LED bright green
-  rgblight_enable();
-  rgblight_disable();
+  // rgblight_enable();
+  // rgblight_disable();
+  
+  // Enable the LED Layers
+  rgblight_layers = my_rgb_layers;
+}
+
+bool led_update_user(led_t led_state) {
+  rgblight_set_layer_state(0, led_state.caps_lock);
+  return true;
 }
 
 // Macros for key presses

@@ -69,7 +69,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #	define RGBLIGHT_DEFAULT_HUE 24
 #	define RGBLIGHT_DEFAULT_SAT 255	// 0->255
 #	define RGBLIGHT_DEFAULT_VAL 250	// 0->255
-#define RGBLIGHT_EFFECT_BREATHING
+# define RGBLIGHT_EFFECT_BREATHING
 //#define RGBLIGHT_EFFECT_RAINBOW_MOOD
 //#define RGBLIGHT_EFFECT_RAINBOW_SWIRL
 //#define RGBLIGHT_EFFECT_SNAKE
@@ -81,10 +81,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //	#define RGBLIGHT_EFFECT_TWINKLE
 /*== customize breathing effect ==*/
 /*==== (DEFAULT) use fixed table instead of exp() and sin() ====*/
-#    define RGBLIGHT_BREATHE_TABLE_SIZE 256      // 256(default) or 128 or 64
+# define RGBLIGHT_BREATHE_TABLE_SIZE 256      // 256(default) or 128 or 64
 /*==== use exp() and sin() ====*/
-#    define RGBLIGHT_EFFECT_BREATHE_CENTER 1.85  // 1 to 2.7
-#    define RGBLIGHT_EFFECT_BREATHE_MAX    100   // 0 to 255
+# define RGBLIGHT_EFFECT_BREATHE_CENTER 1.85  // 1 to 2.7
+# define RGBLIGHT_EFFECT_BREATHE_MAX    100   // 0 to 255
 #endif
 
 /* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
@@ -147,3 +147,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Behaviors to Change */
 #define PERMISSIVE_HOLD
+#define RGBLIGHT_LAYERS
+//#define RGBLIGHT_MAX_LAYERS 1
+#define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
