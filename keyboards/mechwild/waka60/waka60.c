@@ -25,10 +25,26 @@ bool encoder_update_kb(uint8_t index, bool clockwise) {
     if (!encoder_update_user(index, clockwise)) { return false; }
     switch (index) {
         case 0:
-            if (clockwise) {
-                tap_code(KC_VOLU);
-            } else {
-                tap_code(KC_VOLD);
+            if (layer_state_is(DEFAULT)) {
+                if (clockwise) {
+                    tap_code(KC_VOLU);
+                } else {
+                    tap_code(KC_VOLD);
+                }
+            }
+            else if (layer_state_is(FUNCT)){
+                if (clockwise) {
+                    tap_code(KC_PRUP);
+                } else {
+                    tap_code(KC_PGDN);
+                }
+            }
+            else if (layer_state_is(LIGHT)){
+                if (clockwise) {
+                    tap_code(KC_BRIU);
+                } else {
+                    tap_code(KC_BRID);
+                }
             }
         break;
     }
