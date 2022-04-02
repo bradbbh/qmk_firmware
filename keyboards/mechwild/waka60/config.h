@@ -147,6 +147,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Behaviors to Change */
 #define PERMISSIVE_HOLD
+#define HOLD_ON_OTHER_KEY_PRESS
 #define RGBLIGHT_LAYERS
 //#define RGBLIGHT_MAX_LAYERS 1
 #define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
