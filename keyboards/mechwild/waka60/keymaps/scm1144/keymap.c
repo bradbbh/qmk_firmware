@@ -22,11 +22,11 @@ enum waka60_keycodes {
   
   // Color presets
 	OOSSUU,	// OSU Orange
-  RED_CLR
-  BLU_CLR
-  GRE_CLR
-  YEL_CLR
-  PUR_CLR
+  RED_CLR,
+  BLU_CLR,
+  GRE_CLR,
+  YEL_CLR,
+  PUR_CLR,
 };
 
 // Layers
@@ -122,19 +122,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 /* Lighting
  * ,------------------------------------------------------        ------------------------------------------------------.
- * |        |        |        |        |        |        |        |        |        |        |        | Toggle |        |
+ * |        | STATIC | BREATHE|        |        |        |        |        |        |        |        | Toggle |        |
  * |--------+--------+--------+--------+--------+--------+        +--------+--------+--------+--------+--------+--------|
  * |        |        |        |        |  RED   |        |        | YELLOW |        |        | OOSSUU | PURPLE |        |
  * |--------+--------+--------+--------+--------+--------+        +--------+--------+--------+--------+--------+--------|
  * |        |        |        |        |        | GREEN  |        |        |        |        |        |        |        |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
- * |        |        |        |        |        |  BLUE  |        |        |        | Hue Up | Sat Up | Hue Up |        |
+ * |        |        |        |        |        |  BLUE  |        |        |        | Hue Up | Sat Up | Brig Up|        |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
- * |        |--------|        |        |        |                          |        | Hue Dn | Sat Dn | Hue Dn |        |
+ * |        |--------|        |        |        |                          |        | Hue Dn | Sat Dn | Brig Dn|        |
  * `--------------------------------------------------------------------------------------------------------------------'
  */
 [LIGHT] = LAYOUT(
-    _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, RGB_TOG,  _______,
+    _______, RGB_M_P, RGB_M_B, _______, _______, _______,          _______, _______, _______, _______, RGB_TOG,  _______,
     _______, _______, _______, _______, RED_CLR, _______,          YEL_CLR, _______, _______,  OOSSUU, PUR_CLR,  _______,
     _______, _______, _______, _______, _______, GRE_CLR,          _______, _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______, BLU_CLR, _______, _______, _______, RGB_HUI, RGB_SAI, RGB_VAI,  _______,
@@ -197,27 +197,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 			return false;
     case RED_CLR:
       if (record->event.pressed) {
-        rgblight_sethsv(0,255,250);
+        rgblight_sethsv(HSV_RED);
       }
       return false;
     case GRE_CLR:
       if (record->event.pressed) {
-        rgblight_sethsv(85,255,250);
+        rgblight_sethsv(HSV_GREEN);
       }
       return false;
     case BLU_CLR:
       if (record->event.pressed) {
-        rgblight_sethsv(169,255,250);
+        rgblight_sethsv(HSV_BLUE);
       }
       return false;
     case YEL_CLR:
       if (record->event.pressed) {
-        rgblight_sethsv(43,255,250);
+        rgblight_sethsv(HSV_YELLOW);
       }
       return false;
     case PUR_CLR:
       if (record->event.pressed) {
-        rgblight_sethsv(180,255,250);
+        rgblight_sethsv(HSV_PURPLE);
       }
       return false;
 
