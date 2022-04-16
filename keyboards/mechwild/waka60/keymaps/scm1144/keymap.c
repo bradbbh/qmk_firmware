@@ -19,20 +19,15 @@
 // Keycodes
 enum waka60_keycodes {
   _DUMMY = SAFE_RANGE,
-
+  
+  // Color presets
 	OOSSUU,	// OSU Orange
+  RED_CLR
+  BLU_CLR
+  GRE_CLR
+  YEL_CLR
+  PUR_CLR
 };
-
-// Variables
-
-//Lighting Layers
-const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-  {2,1,240,0,50} // Light LED 3 white when the caps lock is active
-);
-
-const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-  my_capslock_layer // Later layers take precedence
-);
 
 // Layers
 enum waka60_layers {
@@ -99,7 +94,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `--------------------------------------------------------------------------------------------------------------------'
  */
 [RAISE] = LAYOUT(
-    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,            KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
+    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,             KC_F7,  KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
     _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, KC_LBRC, KC_RBRC,
     _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, KC_PLUS, KC_QUOT,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MINS, RSFT_T(KC_BSLS),
@@ -122,28 +117,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, KC_HOME, KC_PGUP,
     _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, KC_END,  KC_PGDN,
     KC_CAPS, _______, _______, _______, _______, _______,          _______, _______, _______, _______, KC_MUTE, KC_MPLY,
-    KC_NUM,  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_VOLU, _______,
+     KC_NUM, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_VOLU, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MPRV, KC_VOLD, KC_MNXT 
 ),
 /* Lighting
  * ,------------------------------------------------------        ------------------------------------------------------.
  * |        |        |        |        |        |        |        |        |        |        |        | Toggle |        |
  * |--------+--------+--------+--------+--------+--------+        +--------+--------+--------+--------+--------+--------|
- * |        |        |        |        |        |        |        |        |        |        | OOSSUU |  Mod   |        |
+ * |        |        |        |        |  RED   |        |        | YELLOW |        |        | OOSSUU | PURPLE |        |
  * |--------+--------+--------+--------+--------+--------+        +--------+--------+--------+--------+--------+--------|
- * |        |        |        |        |        |        |        |        |        |        |        |  RMOD  |        |
+ * |        |        |        |        |        | GREEN  |        |        |        |        |        |        |        |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
- * |        |        |        |        |        |        |        |        |        | Hue Up | Sat Up | Hue Up |        |
+ * |        |        |        |        |        |  BLUE  |        |        |        | Hue Up | Sat Up | Hue Up |        |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
  * |        |--------|        |        |        |                          |        | Hue Dn | Sat Dn | Hue Dn |        |
  * `--------------------------------------------------------------------------------------------------------------------'
  */
 [LIGHT] = LAYOUT(
-    _______, RGB_M_P, RGB_M_B, _______, _______, _______,          _______, _______, _______, _______,  RGB_TOG, _______,
-    _______, _______, _______, _______, _______, _______,          _______, _______, _______,  OOSSUU,  _______, _______,
-    _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______,  _______, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_HUI, RGB_SAI,  RGB_VAI, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_HUD, RGB_SAD,  RGB_VAD, _______
+    _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, RGB_TOG,  _______,
+    _______, _______, _______, _______, RED_CLR, _______,          YEL_CLR, _______, _______,  OOSSUU, PUR_CLR,  _______,
+    _______, _______, _______, _______, _______, GRE_CLR,          _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, BLU_CLR, _______, _______, _______, RGB_HUI, RGB_SAI, RGB_VAI,  _______,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_HUD, RGB_SAD, RGB_VAD,  _______
 )
 };
 
@@ -193,67 +188,40 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 )
 */
 
-//Set LEDs when plugged in
-void keyboard_post_init_user(void) {
-  // Due to a "it is a quirk of the ws2812b + blackpill" need to turn on/off the LEDs
-  // to not have the first LED bright green
-  // rgblight_enable();
-  // rgblight_disable();
-  
-  // Enable the LED Layers
-  rgblight_layers = my_rgb_layers;
-}
-
-bool led_update_user(led_t led_state) {
-  rgblight_set_layer_state(0, led_state.caps_lock);
-  return true;
-}
-
-// Macros for key presses
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-
   switch (keycode) {
-    
-    // Set LEDs to OSU orange
-    case OOSSUU:
+		case OOSSUU:
+			if (record->event.pressed) {
+				rgblight_sethsv(24,255,250);
+			}
+			return false;
+    case RED_CLR:
       if (record->event.pressed) {
-        rgblight_sethsv(24,255,250);
+        rgblight_sethsv(0,255,250);
+      }
+      return false;
+    case GRE_CLR:
+      if (record->event.pressed) {
+        rgblight_sethsv(85,255,250);
+      }
+      return false;
+    case BLU_CLR:
+      if (record->event.pressed) {
+        rgblight_sethsv(169,255,250);
+      }
+      return false;
+    case YEL_CLR:
+      if (record->event.pressed) {
+        rgblight_sethsv(43,255,250);
+      }
+      return false;
+    case PUR_CLR:
+      if (record->event.pressed) {
+        rgblight_sethsv(180,255,250);
       }
       return false;
 
     default:
       return true; // Process all other keycodes normally
-  }
+    }
 }
-
-#ifdef ENCODER_ENABLE
-bool encoder_update_kb(uint8_t index, bool clockwise) {
-  if (!encoder_update_user(index, clockwise)) { return false; }
-  switch (index) {
-    case 0:
-      if (layer_state_is(DEFAULT)) {
-        if (clockwise) {
-          tap_code(KC_VOLU);
-        } else {
-          tap_code(KC_VOLD);
-        }
-      }
-      else if (layer_state_is(FUNCT)){
-        if (clockwise) {
-          tap_code(KC_PGDN);
-        } else {
-          tap_code(KC_PGUP);
-        }
-      }
-      else if (layer_state_is(LIGHT)){
-        if (clockwise) {
-          tap_code(KC_BRIU);
-        } else {
-          tap_code(KC_BRID);
-        }
-      }
-    break;
-  }
-  return true;
-}
-#endif
