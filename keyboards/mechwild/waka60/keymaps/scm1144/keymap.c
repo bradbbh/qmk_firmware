@@ -20,10 +20,14 @@
 enum waka60_keycodes {
   _DUMMY = SAFE_RANGE,
 
-	OOSSUU,	// OSU Orange
+  // Color presets
+  OOSSUU,  // OSU Orange
+  RED_CLR,
+  BLU_CLR,
+  GRE_CLR,
+  YEL_CLR,
+  PUR_CLR,
 };
-
-// Variables
 
 //Lighting Layers
 const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
@@ -125,26 +129,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NUM,  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_VOLU, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MPRV, KC_VOLD, KC_MNXT 
 ),
-/* Lighting
- * ,------------------------------------------------------        ------------------------------------------------------.
- * |        |        |        |        |        |        |        |        |        |        |        | Toggle |        |
- * |--------+--------+--------+--------+--------+--------+        +--------+--------+--------+--------+--------+--------|
- * |        |        |        |        |        |        |        |        |        |        | OOSSUU |  Mod   |        |
- * |--------+--------+--------+--------+--------+--------+        +--------+--------+--------+--------+--------+--------|
- * |        |        |        |        |        |        |        |        |        |        |        |  RMOD  |        |
- * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
- * |        |        |        |        |        |        |        |        |        | Hue Up | Sat Up | Hue Up |        |
- * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
- * |        |--------|        |        |        |                          |        | Hue Dn | Sat Dn | Hue Dn |        |
- * `--------------------------------------------------------------------------------------------------------------------'
- */
-[LIGHT] = LAYOUT(
-    _______, RGB_M_P, RGB_M_B, _______, _______, _______,          _______, _______, _______, _______,  RGB_TOG, _______,
-    _______, _______, _______, _______, _______, _______,          _______, _______, _______,  OOSSUU,  _______, _______,
-    _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______,  _______, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_HUI, RGB_SAI,  RGB_VAI, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_HUD, RGB_SAD,  RGB_VAD, _______
-)
+  /* Lighting
+   * ,------------------------------------------------------        ------------------------------------------------------.
+   * |        | STATIC | BREATHE|        |        |        |        |        |        |        |        | Toggle |        |
+   * |--------+--------+--------+--------+--------+--------+        +--------+--------+--------+--------+--------+--------|
+   * |        |        |        |        |  RED   |        |        | YELLOW |        |        | OOSSUU | PURPLE |        |
+   * |--------+--------+--------+--------+--------+--------+        +--------+--------+--------+--------+--------+--------|
+   * |        |        |        |        |        | GREEN  |        |        |        |        |        |        |        |
+   * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
+   * |        |        |        |        |        |  BLUE  |        |        |        | Hue Up | Sat Up | Brig Up|        |
+   * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
+   * |        |--------|        |        |        |                          |        | Hue Dn | Sat Dn | Brig Dn|        |
+   * `--------------------------------------------------------------------------------------------------------------------'
+   */
+  [LIGHT] = LAYOUT(
+      _______, RGB_M_P, RGB_M_B, _______, _______, _______,          _______, _______, _______, _______, RGB_TOG,  _______,
+      _______, _______, _______, _______, RED_CLR, _______,          YEL_CLR, _______, _______,  OOSSUU, PUR_CLR,  _______,
+      _______, _______, _______, _______, _______, GRE_CLR,          _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, BLU_CLR, _______, _______, _______, RGB_HUI, RGB_SAI, RGB_VAI,  _______,
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_HUD, RGB_SAD, RGB_VAD,  _______
+  )
 };
 
 // Old layers
@@ -196,7 +200,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //Set LEDs when plugged in
 void keyboard_post_init_user(void) {
   // Due to a "it is a quirk of the ws2812b + blackpill" need to turn on/off the LEDs
-  // to not have the first LED bright green
+  // to not have the first LED bright green. https://discord.com/channels/753705260031148103/837441710698004531/940758787478945813
   // rgblight_enable();
   // rgblight_disable();
   
@@ -212,17 +216,40 @@ bool led_update_user(led_t led_state) {
 // Macros for key presses
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
-  switch (keycode) {
-    
-    // Set LEDs to OSU orange
-    case OOSSUU:
-      if (record->event.pressed) {
-        rgblight_sethsv(24,255,250);
-      }
-      return false;
-
-    default:
-      return true; // Process all other keycodes normally
+    switch (keycode) {
+      case OOSSUU:
+        if (record->event.pressed) {
+          rgblight_sethsv(24,255,250);
+        }
+        return false;
+      case RED_CLR:
+        if (record->event.pressed) {
+          rgblight_sethsv(HSV_RED);
+        }
+        return false;
+      case GRE_CLR:
+        if (record->event.pressed) {
+          rgblight_sethsv(HSV_GREEN);
+        }
+        return false;
+      case BLU_CLR:
+        if (record->event.pressed) {
+          rgblight_sethsv(HSV_BLUE);
+        }
+        return false;
+      case YEL_CLR:
+        if (record->event.pressed) {
+          rgblight_sethsv(HSV_YELLOW);
+        }
+        return false;
+      case PUR_CLR:
+        if (record->event.pressed) {
+          rgblight_sethsv(HSV_PURPLE);
+        }
+        return false;
+        
+      default:
+        return true; // Process all other keycodes normally
   }
 }
 
