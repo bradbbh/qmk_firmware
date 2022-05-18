@@ -27,6 +27,7 @@ enum waka60_keycodes {
   GRE_CLR,
   YEL_CLR,
   PUR_CLR,
+  WHT_CLR,
 };
 
 //Lighting Layers
@@ -133,7 +134,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,------------------------------------------------------        ------------------------------------------------------.
    * |        | STATIC | BREATHE|        |        |        |        |        |        |        |        | Toggle |        |
    * |--------+--------+--------+--------+--------+--------+        +--------+--------+--------+--------+--------+--------|
-   * |        |        |        |        |  RED   |        |        | YELLOW |        |        | OOSSUU | PURPLE |        |
+   * |        |        |  WHITE |        |  RED   |        |        | YELLOW |        |        | OOSSUU | PURPLE |        |
    * |--------+--------+--------+--------+--------+--------+        +--------+--------+--------+--------+--------+--------|
    * |        |        |        |        |        | GREEN  |        |        |        |        |        |        |        |
    * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
@@ -144,7 +145,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [LIGHT] = LAYOUT(
       _______, RGB_M_P, RGB_M_B, _______, _______, _______,          _______, _______, _______, _______, RGB_TOG,  _______,
-      _______, _______, _______, _______, RED_CLR, _______,          YEL_CLR, _______, _______,  OOSSUU, PUR_CLR,  _______,
+      _______, _______, WHT_CLR, _______, RED_CLR, _______,          YEL_CLR, _______, _______,  OOSSUU, PUR_CLR,  _______,
       _______, _______, _______, _______, _______, GRE_CLR,          _______, _______, _______, _______, _______, _______,
       _______, _______, _______, _______, _______, BLU_CLR, _______, _______, _______, RGB_HUI, RGB_SAI, RGB_VAI,  _______,
       _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_HUD, RGB_SAD, RGB_VAD,  _______
@@ -245,6 +246,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case PUR_CLR:
         if (record->event.pressed) {
           rgblight_sethsv(HSV_PURPLE);
+        }
+        return false;
+      case WHT_CLR:
+        if (record->event.pressed) {
+          rgblight_sethsv(HSV_WHITE);
         }
         return false;
         
