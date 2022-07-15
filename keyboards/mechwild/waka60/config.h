@@ -30,8 +30,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MATRIX_ROWS 10
 #define MATRIX_COLS 7
 
-#define EEPROM_I2C_24LC64
-
 /*
  * Keyboard Matrix Assignments
  *
@@ -61,9 +59,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGB_DI_PIN A1
 #ifdef RGB_DI_PIN
 #	define RGBLED_NUM 3
-#	define RGBLIGHT_HUE_STEP 10
-#	define RGBLIGHT_SAT_STEP 17
-#	define RGBLIGHT_VAL_STEP 17
+#	define RGBLIGHT_HUE_STEP 8
+#	define RGBLIGHT_SAT_STEP 8
+#	define RGBLIGHT_VAL_STEP 8
 #	define RGBLIGHT_LIMIT_VAL 255
 #	define RGBLIGHT_SLEEP
 #	define RGBLIGHT_DEFAULT_HUE 24
@@ -84,7 +82,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # define RGBLIGHT_BREATHE_TABLE_SIZE 256      // 256(default) or 128 or 64
 /*==== use exp() and sin() ====*/
 # define RGBLIGHT_EFFECT_BREATHE_CENTER 1.85  // 1 to 2.7
-# define RGBLIGHT_EFFECT_BREATHE_MAX    100   // 0 to 255
+# define RGBLIGHT_EFFECT_BREATHE_MAX    150   // 0 to 255
 #endif
 
 /* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
