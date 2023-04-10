@@ -2,20 +2,6 @@
 Ortho48 Keymap
 */
 
-/*
-Instructions for flashing new keymap:
-	-Install qmk_firmware (https://docs.qmk.fm/#/newbs).
-	-Create and build firmware.
-	-Open command line window and run the following commands (Mac):
-		cd qmk_firmware
-		Make cannonkeys/ortho48:scm1144
-		cd ~
-		cd /opt/brew/cellar/dfu-util/0.11/bin
-	-Place keyboard in dfu reset mode, then:
-		Dfu-util -d 1eaf:0003 -a 2 -D "/Users/bradhall/qmk_firmware/cannonkeys_ortho48_scm1144.bin"
-After pressing reset again, board should be ready with new firmware!	
-*/
-
 #include QMK_KEYBOARD_H
 
 // Keycodes
@@ -87,7 +73,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 /* Function
  * ,-----------------------------------------------------------------------------------------------------------.
- * | WIDETXT| TAUNTXT|        |        |        |        |        |        |        |        |  Home  |Page Up |
+ * |        |        |        |        |        |        |        |        |        |        |  Home  |Page Up |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
  * | CapsLck|        |        |        |        |        |        |        |        |        |  End   |Page Dn |
  * |--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------|
