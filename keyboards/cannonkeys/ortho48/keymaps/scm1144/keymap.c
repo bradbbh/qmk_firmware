@@ -21,9 +21,6 @@ After pressing reset again, board should be ready with new firmware!
 // Keycodes
 enum ortho48_keycodes {
   _DUMMY = SAFE_RANGE,
-
-  WIDETXT, // w i d e t e x t   f o r   a   w i d e   b o y
-  TAUNTXT,  // FoR ThE UlTiMaTe sHiTpOsTiNg eXpErIeNcE
 };
 
 // Layers
@@ -100,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------------------------------'
  */
 [FUNCT] = LAYOUT_ortho_4x12(
-    WIDETXT, TAUNTXT, _______, _______, _______, _______, _______, _______, _______, _______, KC_HOME, KC_PGUP,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_HOME, KC_PGUP,
     KC_CAPS, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_END,  KC_PGDN,
     KC_NUM,  _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_VOLU, KC_MPLY,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MPRV, KC_VOLD, KC_MNXT
@@ -141,67 +138,3 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 )
 */
-
-// Macros for key presses
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    static struct {
-        bool on;
-        bool first;
-    } w_i_d_e_t_e_x_t = {false, false};
-
-    if (w_i_d_e_t_e_x_t.on) {
-        if (record->event.pressed) {
-            switch (keycode) {
-                case KC_A...KC_0:
-                case KC_MINUS...KC_SLASH:
-                case KC_SPC:
-                    if (w_i_d_e_t_e_x_t.first) {
-                        w_i_d_e_t_e_x_t.first = false;
-                    } else {
-                        send_char(' ');
-                    }
-                    break;
-                case KC_ENT:
-                    w_i_d_e_t_e_x_t.first = true;
-                    break;
-                case KC_BSPC:
-                    send_char('\b'); // backspace
-                    break;
-            }
-        }
-    }
-
-    static bool tAuNtTeXt = false;
-
-    if (tAuNtTeXt) {
-        if (record->event.pressed) {
-            if (keycode != KC_SPC) {
-                register_code(KC_CAPS);
-                unregister_code(KC_CAPS);
-            }
-        }
-    }
-
-    switch (keycode) {
-        /* z e s t y   m e m e s */
-        case WIDETXT:
-            if (record->event.pressed) {
-                w_i_d_e_t_e_x_t.on = !w_i_d_e_t_e_x_t.on;
-                w_i_d_e_t_e_x_t.first = true;
-            }
-            return false;
-        case TAUNTXT:
-            if (record->event.pressed) {
-                tAuNtTeXt = !tAuNtTeXt;
-                // when it's turned on, toggle caps lock (makes first letter lowercase)
-                if (tAuNtTeXt) {
-                    register_code(KC_CAPS);
-                    unregister_code(KC_CAPS);
-                }
-            }
-            return false;
-
-        default:
-            return true; // Process all other keycodes normally
-    }
-}
